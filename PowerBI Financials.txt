@@ -1,0 +1,19 @@
+Includes OFFSET FETCH
+
+SELECT 
+SalesOrderNumber AS [InvoiceNumber],
+OrderDate,
+SUM(SalesAmount) AS [Invoice Subtotal],
+Sum(TaxAmt) AS [Tax Amount],
+Sum(OrderQuantity) AS [Total Quantity],
+SUM(SalesAmount) + Sum(TaxAmt) AS [Invoice Total]
+
+FROM FactInternetSales
+WHERE SalesTerritoryKey = 6
+
+GROUP BY SalesOrderNumber, OrderDate
+HAVING SUM(SalesAmount) > 1000
+
+ORDER BY [Invoice Subtotal] DESC
+
+OFFSET 2 ROWS FETCH NEXT 10 ROWS ONLY
